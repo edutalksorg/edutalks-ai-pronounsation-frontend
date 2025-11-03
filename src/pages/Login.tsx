@@ -1,5 +1,9 @@
 import { useState } from 'react';
+<<<<<<< HEAD
 import { useNavigate, Link } from 'react-router-dom';
+=======
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,13 +23,21 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
     try {
       await login(email, password);
       toast({
         title: 'Login successful',
         description: 'Welcome back!',
       });
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
       const storedUser = localStorage.getItem('edulearn_user');
       if (storedUser) {
         const user = JSON.parse(storedUser);
@@ -36,10 +48,15 @@ export default function Login() {
         } else {
           navigate('/dashboard');
         }
+<<<<<<< HEAD
       } else {
         navigate('/dashboard');
       }
     } catch (error: any) {
+=======
+      }
+    } catch (error) {
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
       toast({
         title: 'Login failed',
         description: error instanceof Error ? error.message : 'Invalid credentials',
@@ -50,6 +67,7 @@ export default function Login() {
     }
   };
 
+<<<<<<< HEAD
   // Google sign-in handler: redirect to backend OAuth entrypoint.
   // Ensure your backend exposes an OAuth route (example: /api/v1/auth/google)
   const handleGoogleSignIn = () => {
@@ -60,6 +78,8 @@ export default function Login() {
     window.location.href = googleUrl;
   };
 
+=======
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-md">
@@ -70,7 +90,10 @@ export default function Login() {
           <CardTitle className="text-2xl">Welcome Back</CardTitle>
           <CardDescription>Sign in to continue your learning journey</CardDescription>
         </CardHeader>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -84,7 +107,10 @@ export default function Login() {
                 required
               />
             </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -96,13 +122,17 @@ export default function Login() {
                 required
               />
             </div>
+<<<<<<< HEAD
 
             {/* Primary sign-in */}
+=======
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
             <Button type="submit" className="w-full gradient-hero" disabled={isLoading}>
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
 
+<<<<<<< HEAD
           {/* Divider */}
           <div className="my-3 flex items-center gap-3">
             <hr className="flex-1 border-t border-gray-200" />
@@ -132,6 +162,13 @@ export default function Login() {
             <Link to="/register" className="block text-center w-full py-2 rounded-lg text-white font-semibold bg-gradient-to-r from-blue-600 to-teal-400 hover:opacity-95 transition">
               Create Account
             </Link>
+=======
+          <div className="mt-6 text-center text-sm text-muted-foreground">
+            <p className="mb-2">Demo Credentials:</p>
+            <p>Super Admin: superadmin@edulearndevelop.com / Super@123</p>
+            <p>Admin: admin@edulearndevelop.com / Admin@123</p>
+            <p>User: user@edulearndevelop.com / User@123</p>
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
           </div>
         </CardContent>
       </Card>

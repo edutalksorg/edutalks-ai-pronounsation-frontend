@@ -5,11 +5,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { Navbar } from "@/components/Navbar";
+<<<<<<< HEAD
 
 // ✅ Pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register"; // ✅ newly added
+=======
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
@@ -18,6 +23,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+<<<<<<< HEAD
 const ProtectedRoute = ({
   children,
   allowedRoles,
@@ -33,6 +39,13 @@ const ProtectedRoute = ({
         Loading...
       </div>
     );
+=======
+const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode; allowedRoles?: string[] }) => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
   }
 
   if (!user) {
@@ -53,6 +66,7 @@ const AppRoutes = () => {
     <>
       <Navbar />
       <Routes>
+<<<<<<< HEAD
         <Route
           path="/"
           element={
@@ -98,6 +112,14 @@ const AppRoutes = () => {
           path="/dashboard"
           element={
             <ProtectedRoute allowedRoles={["user"]}>
+=======
+        <Route path="/" element={user ? <Navigate to={user.role === 'superadmin' ? '/superadmin' : user.role === 'admin' ? '/admin' : '/dashboard'} replace /> : <Index />} />
+        <Route path="/login" element={user ? <Navigate to={user.role === 'superadmin' ? '/superadmin' : user.role === 'admin' ? '/admin' : '/dashboard'} replace /> : <Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['user']}>
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
               <Dashboard />
             </ProtectedRoute>
           }
@@ -105,7 +127,11 @@ const AppRoutes = () => {
         <Route
           path="/admin"
           element={
+<<<<<<< HEAD
             <ProtectedRoute allowedRoles={["admin"]}>
+=======
+            <ProtectedRoute allowedRoles={['admin']}>
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
               <AdminDashboard />
             </ProtectedRoute>
           }
@@ -113,7 +139,11 @@ const AppRoutes = () => {
         <Route
           path="/superadmin"
           element={
+<<<<<<< HEAD
             <ProtectedRoute allowedRoles={["superadmin"]}>
+=======
+            <ProtectedRoute allowedRoles={['superadmin']}>
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
               <SuperAdminDashboard />
             </ProtectedRoute>
           }
@@ -121,7 +151,11 @@ const AppRoutes = () => {
         <Route
           path="/profile"
           element={
+<<<<<<< HEAD
             <ProtectedRoute allowedRoles={["user"]}>
+=======
+            <ProtectedRoute allowedRoles={['user']}>
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
               <Profile />
             </ProtectedRoute>
           }

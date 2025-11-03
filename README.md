@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Learniverse Talk — Vite + React + TypeScript
 
 ## Project info
@@ -18,6 +19,43 @@ Set-Location -Path "C:\Users\user\Downloads\learniverse-talk-main\learniverse-ta
 npm install
 
 # start dev server
+=======
+# Welcome to your Lovable project
+
+## Project info
+
+**URL**: https://lovable.dev/projects/5a7cf82c-cf08-4246-9a73-96bc8d231281
+
+## How can I edit this code?
+
+There are several ways of editing your application.
+
+**Use Lovable**
+
+Simply visit the [Lovable Project](https://lovable.dev/projects/5a7cf82c-cf08-4246-9a73-96bc8d231281) and start prompting.
+
+Changes made via Lovable will be committed automatically to this repo.
+
+**Use your preferred IDE**
+
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+Follow these steps:
+
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
+
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
+
+# Step 3: Install the necessary dependencies.
+npm i
+
+# Step 4: Start the development server with auto-reloading and an instant preview.
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
 npm run dev
 ```
 
@@ -45,6 +83,7 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+<<<<<<< HEAD
 ## Available npm scripts
 
 - `npm run dev` — start Vite dev server
@@ -111,3 +150,16 @@ If you'd like, I can:
 - create a small CONTRIBUTING.md or project-specific run/debug tips.
 
 Tell me which of the above you'd like and I'll apply it.
+=======
+## How can I deploy this project?
+
+Simply open [Lovable](https://lovable.dev/projects/5a7cf82c-cf08-4246-9a73-96bc8d231281) and click on Share -> Publish.
+
+## Can I connect a custom domain to my Lovable project?
+
+Yes, you can!
+
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+>>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
