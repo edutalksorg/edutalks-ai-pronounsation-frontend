@@ -1,53 +1,31 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Phone, BookOpen, Brain, Mic } from 'lucide-react';
-import { VoiceCalling } from '@/components/dashboard/VoiceCalling';
-import { DailyTopics } from '@/components/dashboard/DailyTopics';
-import { DailyQuizzes } from '@/components/dashboard/DailyQuizzes';
-import { AIPronunciation } from '@/components/dashboard/AIPronunciation';
+// src/pages/Dashboard.tsx
+import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DailyTopics from "@/components/dashboard/DailyTopics";
+import DailyQuizzes from "@/components/dashboard/DailyQuizzes";
+import AIPronunciation from "@/components/dashboard/AIPronunciation";
+import VoiceCalling from "@/components/dashboard/VoiceCalling";
 
 export default function Dashboard() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Learning Dashboard</h1>
-        <p className="text-muted-foreground">Track your progress and continue learning</p>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl md:text-4xl font-bold mb-1">Dashboard</h1>
+        <p className="text-muted-foreground">Welcome back, Demo User (admin)</p>
       </div>
 
-      <Tabs defaultValue="voice" className="space-y-6">
+      <Tabs defaultValue="topics" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
-          <TabsTrigger value="voice" className="flex items-center gap-2 py-3">
-            <Phone className="h-4 w-4" />
-            <span>Voice Calls</span>
-          </TabsTrigger>
-          <TabsTrigger value="topics" className="flex items-center gap-2 py-3">
-            <BookOpen className="h-4 w-4" />
-            <span>Daily Topics</span>
-          </TabsTrigger>
-          <TabsTrigger value="quizzes" className="flex items-center gap-2 py-3">
-            <Brain className="h-4 w-4" />
-            <span>Quizzes</span>
-          </TabsTrigger>
-          <TabsTrigger value="pronunciation" className="flex items-center gap-2 py-3">
-            <Mic className="h-4 w-4" />
-            <span>AI Pronunciation</span>
-          </TabsTrigger>
+          <TabsTrigger value="topics">Daily Topics</TabsTrigger>
+          <TabsTrigger value="quizzes">Daily Quizzes</TabsTrigger>
+          <TabsTrigger value="pronunciation">AI Pronunciation</TabsTrigger>
+          <TabsTrigger value="calling">Voice Calling</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="voice">
-          <VoiceCalling />
-        </TabsContent>
-
-        <TabsContent value="topics">
-          <DailyTopics />
-        </TabsContent>
-
-        <TabsContent value="quizzes">
-          <DailyQuizzes />
-        </TabsContent>
-
-        <TabsContent value="pronunciation">
-          <AIPronunciation />
-        </TabsContent>
+        <TabsContent value="topics"><DailyTopics /></TabsContent>
+        <TabsContent value="quizzes"><DailyQuizzes /></TabsContent>
+        <TabsContent value="pronunciation"><AIPronunciation /></TabsContent>
+        <TabsContent value="calling"><VoiceCalling /></TabsContent>
       </Tabs>
     </div>
   );

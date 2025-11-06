@@ -1,91 +1,94 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// src/contexts/AuthContext.tsx
+import React, { createContext, useContext, useEffect, useState } from "react";
+import AuthAPI, { LoginPayload } from "../lib/api/auth";
 
-export type UserRole = 'superadmin' | 'admin' | 'user';
+export type UserRole = "superadmin" | "admin" | "user";
 
 export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: UserRole;
-  subscriptionStatus?: 'active' | 'inactive';
-  walletBalance?: number;
-  referralCode?: string;
+  id?: string;
+  email?: string;
+  phoneNumber?: string;
+  name?: string;
+  role?: UserRole;
+  [k: string]: any;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
   isLoading: boolean;
+  login: (identifier: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Dummy users for demonstration
-const DUMMY_USERS = {
-  'superadmin@edulearndevelop.com': {
-    password: 'Super@123',
-    data: {
-      id: '1',
-      email: 'superadmin@edulearndevelop.com',
-      name: 'Super Admin',
-      role: 'superadmin' as UserRole,
-    },
-  },
-  'admin@edulearndevelop.com': {
-    password: 'Admin@123',
-    data: {
-      id: '2',
-      email: 'admin@edulearndevelop.com',
-      name: 'Admin User',
-      role: 'admin' as UserRole,
-    },
-  },
-  'user@edulearndevelop.com': {
-    password: 'User@123',
-    data: {
-      id: '3',
-      email: 'user@edulearndevelop.com',
-      name: 'John Doe',
-      role: 'user' as UserRole,
-      subscriptionStatus: 'active' as const,
-      walletBalance: 150,
-      referralCode: 'JOHN2024',
-    },
-  },
-};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Load persisted user on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('edulearn_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    try {
+      const storedUser = localStorage.getItem("edulearn_user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (e) {
+      console.error("Error loading stored user:", e);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const userCredentials = DUMMY_USERS[email as keyof typeof DUMMY_USERS];
-    
-    if (!userCredentials || userCredentials.password !== password) {
-      throw new Error('Invalid email or password');
-    }
+  const login = async (identifier: string, password: string) => {
+    setIsLoading(true);
+    try {
+      const payload: LoginPayload = {
+        identifier,
+        password,
+        deviceId: "web-client",
+        rememberMe: true,
+      };
 
-    const userData = userCredentials.data;
-    setUser(userData);
-    localStorage.setItem('edulearn_user', JSON.stringify(userData));
+      const response = await AuthAPI.login(payload);
+      console.log("Login response:", response);
+
+      const accessToken = response?.accessToken || response?.data?.accessToken;
+      const refreshToken = response?.refreshToken || response?.data?.refreshToken;
+      const userData =
+        response?.user || response?.data?.user || response?.data || null;
+
+      if (!userData) throw new Error("User data not returned from API");
+
+      if (accessToken) localStorage.setItem("access_token", accessToken);
+      if (refreshToken) localStorage.setItem("refresh_token", refreshToken);
+      localStorage.setItem("edulearn_user", JSON.stringify(userData));
+
+      setUser(userData);
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      throw new Error("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('edulearn_user');
+  const logout = async () => {
+    setIsLoading(true);
+    try {
+      const refreshToken = localStorage.getItem("refresh_token") || "";
+      await AuthAPI.logout(refreshToken, false);
+    } catch (error) {
+      console.warn("Logout error:", error);
+    } finally {
+      localStorage.clear();
+      setUser(null);
+      setIsLoading(false);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -93,8 +96,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

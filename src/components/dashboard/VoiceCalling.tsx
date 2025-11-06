@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Phone, PhoneOff, Star, Ban, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-export const VoiceCalling = () => {
+export default function VoiceCalling() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isInCall, setIsInCall] = useState(false);
   const [showRating, setShowRating] = useState(false);
@@ -23,54 +23,26 @@ export const VoiceCalling = () => {
       setIsConnecting(false);
       setIsInCall(true);
       setCallPartner(`User_${Math.floor(Math.random() * 9999)}`);
-      toast({
-        title: 'Connected',
-        description: 'You are now connected with a partner',
-      });
+      toast({ title: 'Connected', description: 'You are now connected with a partner' });
     }, 2000);
   };
 
-  const endCall = () => {
-    setIsInCall(false);
-    setShowRating(true);
-  };
-
-  const submitRating = () => {
-    toast({
-      title: 'Thank you for your feedback',
-      description: 'Your rating has been submitted',
-    });
-    setShowRating(false);
-    setRating(0);
-    setFeedback('');
-  };
-
-  const blockUser = () => {
-    toast({
-      title: 'User blocked',
-      description: 'You will not be matched with this user again',
-    });
-    setShowRating(false);
-  };
+  const endCall = () => { setIsInCall(false); setShowRating(true); };
+  const submitRating = () => { toast({ title: 'Thank you for your feedback', description: 'Your rating has been submitted' }); setShowRating(false); setRating(0); setFeedback(''); };
+  const blockUser = () => { toast({ title: 'User blocked', description: 'You will not be matched with this user again' }); setShowRating(false); };
 
   return (
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Phone className="h-5 w-5" />
-            Voice Calling Feature
-          </CardTitle>
-          <CardDescription>
-            Connect with real users to practice your communication skills
-          </CardDescription>
+          <CardTitle className="flex items-center gap-2"><Phone className="h-5 w-5" />Voice Calling Feature</CardTitle>
+          <CardDescription>Connect with real users to practice your communication skills</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <Alert>
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              <strong>Privacy Notice:</strong> Do not share personal information during calls.
-              EduLearnDevelop is not responsible for any losses resulting from shared information.
+              <strong>Privacy Notice:</strong> Do not share personal information during calls. EduLearnDevelop is not responsible for any losses resulting from shared information.
             </AlertDescription>
           </Alert>
 
@@ -81,13 +53,8 @@ export const VoiceCalling = () => {
                   <Phone className="h-12 w-12 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold">Ready to Practice?</h3>
-                <p className="text-muted-foreground max-w-md">
-                  Click the button below to connect with another learner for a practice conversation
-                </p>
-                <Button size="lg" onClick={startCall} className="gradient-hero">
-                  <Phone className="h-5 w-5 mr-2" />
-                  Start Call
-                </Button>
+                <p className="text-muted-foreground max-w-md">Click the button below to connect with another learner for a practice conversation</p>
+                <Button size="lg" onClick={startCall} className="gradient-hero"><Phone className="h-5 w-5 mr-2" />Start Call</Button>
               </div>
             )}
 
@@ -113,10 +80,7 @@ export const VoiceCalling = () => {
                 <div className="bg-muted rounded-lg p-4">
                   <p className="text-sm text-muted-foreground">Call Duration: 00:45</p>
                 </div>
-                <Button size="lg" variant="destructive" onClick={endCall}>
-                  <PhoneOff className="h-5 w-5 mr-2" />
-                  End Call
-                </Button>
+                <Button size="lg" variant="destructive" onClick={endCall}><PhoneOff className="h-5 w-5 mr-2" />End Call</Button>
               </div>
             )}
           </div>
@@ -127,52 +91,30 @@ export const VoiceCalling = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Rate Your Experience</DialogTitle>
-            <DialogDescription>
-              Please rate your conversation with {callPartner}
-            </DialogDescription>
+            <DialogDescription>Please rate your conversation with {callPartner}</DialogDescription>
           </DialogHeader>
           <div className="space-y-6 py-4">
             <div className="space-y-2">
               <Label>Rating</Label>
               <div className="flex gap-2 justify-center">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Button
-                    key={star}
-                    variant="ghost"
-                    size="lg"
-                    onClick={() => setRating(star)}
-                    className="p-0 w-12 h-12"
-                  >
-                    <Star
-                      className={`h-8 w-8 ${
-                        star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
-                      }`}
-                    />
+                {[1,2,3,4,5].map((star) => (
+                  <Button key={star} variant="ghost" size="lg" onClick={() => setRating(star)} className="p-0 w-12 h-12">
+                    <Star className={`h-8 w-8 ${star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />
                   </Button>
                 ))}
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="feedback">Feedback (Optional)</Label>
-              <Textarea
-                id="feedback"
-                placeholder="Share your experience..."
-                value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
-              />
+              <Textarea id="feedback" placeholder="Share your experience..." value={feedback} onChange={(e) => setFeedback(e.target.value)} />
             </div>
             <div className="flex gap-3">
-              <Button onClick={submitRating} className="flex-1">
-                Submit Rating
-              </Button>
-              <Button variant="destructive" onClick={blockUser}>
-                <Ban className="h-4 w-4 mr-2" />
-                Block User
-              </Button>
+              <Button onClick={submitRating} className="flex-1">Submit Rating</Button>
+              <Button variant="destructive" onClick={blockUser}><Ban className="h-4 w-4 mr-2" />Block User</Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
     </>
   );
-};
+}

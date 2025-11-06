@@ -1,10 +1,46 @@
-import axiosInstance from "../axiosConfig";
+import axiosClient from "./axiosClient";
 
-export const getParagraphs = () => axiosInstance.get("/pronunciation/paragraphs");
-export const createParagraph = (data: any) => axiosInstance.post("/pronunciation/paragraphs", data);
-export const getParagraphById = (id: string) => axiosInstance.get(`/pronunciation/paragraphs/${id}`);
-export const updateParagraph = (id: string, data: any) => axiosInstance.put(`/pronunciation/paragraphs/${id}`, data);
-export const deleteParagraph = (id: string) => axiosInstance.delete(`/pronunciation/paragraphs/${id}`);
-export const assessAudio = (data: any) => axiosInstance.post("/pronunciation/assess", data);
-export const getAssessmentHistory = () => axiosInstance.get("/pronunciation/history");
-export const getAssessmentAttempt = (id: string) => axiosInstance.get(`/pronunciation/attempts/${id}`);
+// ---------- Pronunciation Module APIs ----------
+export const PronunciationAPI = {
+  getParagraphs: async () => {
+    const { data } = await axiosClient.get("/pronunciation/paragraphs");
+    return data;
+  },
+
+  createParagraph: async (payload: any) => {
+    const { data } = await axiosClient.post("/pronunciation/paragraphs", payload);
+    return data;
+  },
+
+  getParagraphById: async (id: string) => {
+    const { data } = await axiosClient.get(`/pronunciation/paragraphs/${id}`);
+    return data;
+  },
+
+  updateParagraph: async (id: string, payload: any) => {
+    const { data } = await axiosClient.put(`/pronunciation/paragraphs/${id}`, payload);
+    return data;
+  },
+
+  deleteParagraph: async (id: string) => {
+    const { data } = await axiosClient.delete(`/pronunciation/paragraphs/${id}`);
+    return data;
+  },
+
+  assessAudio: async (payload: any) => {
+    const { data } = await axiosClient.post("/pronunciation/assess", payload);
+    return data;
+  },
+
+  getAssessmentHistory: async () => {
+    const { data } = await axiosClient.get("/pronunciation/history");
+    return data;
+  },
+
+  getAssessmentAttempt: async (id: string) => {
+    const { data } = await axiosClient.get(`/pronunciation/attempts/${id}`);
+    return data;
+  },
+};
+
+export default PronunciationAPI;

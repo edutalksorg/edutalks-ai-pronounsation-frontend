@@ -12,7 +12,7 @@ const SAMPLE_PHRASES = [
   'Knowledge is power',
 ];
 
-export const AIPronunciation = () => {
+export default function AIPronunciation() {
   const [isRecording, setIsRecording] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState(SAMPLE_PHRASES[0]);
   const [score, setScore] = useState<number | null>(null);
@@ -20,14 +20,8 @@ export const AIPronunciation = () => {
 
   const startRecording = () => {
     setIsRecording(true);
-    toast({
-      title: 'Recording started',
-      description: 'Speak clearly into your microphone',
-    });
-
-    setTimeout(() => {
-      stopRecording();
-    }, 3000);
+    toast({ title: 'Recording started', description: 'Speak clearly into your microphone' });
+    setTimeout(stopRecording, 3000);
   };
 
   const stopRecording = () => {
@@ -35,18 +29,12 @@ export const AIPronunciation = () => {
     setTimeout(() => {
       const randomScore = Math.floor(Math.random() * 20) + 80;
       setScore(randomScore);
-      toast({
-        title: 'Analysis complete',
-        description: `Your pronunciation score: ${randomScore}%`,
-      });
+      toast({ title: 'Analysis complete', description: `Your pronunciation score: ${randomScore}%` });
     }, 1000);
   };
 
   const playPhrase = () => {
-    toast({
-      title: 'Playing audio',
-      description: 'Listen to the correct pronunciation',
-    });
+    toast({ title: 'Playing audio', description: 'Listen to the correct pronunciation' });
   };
 
   const newPhrase = () => {
@@ -63,38 +51,20 @@ export const AIPronunciation = () => {
             <Mic className="h-5 w-5" />
             AI Pronunciation Feedback
           </CardTitle>
-          <CardDescription>
-            Practice your pronunciation and get instant AI-powered feedback
-          </CardDescription>
+          <CardDescription>Practice your pronunciation and get instant AI-powered feedback</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="bg-muted rounded-lg p-6 text-center">
             <p className="text-sm text-muted-foreground mb-2">Practice this phrase:</p>
             <p className="text-2xl font-semibold">{currentPhrase}</p>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={playPhrase}
-              className="mt-4"
-            >
-              <Volume2 className="h-4 w-4 mr-2" />
-              Listen
+            <Button variant="ghost" size="sm" onClick={playPhrase} className="mt-4">
+              <Volume2 className="h-4 w-4 mr-2" /> Listen
             </Button>
           </div>
 
           <div className="flex flex-col items-center gap-6">
-            <div
-              className={`w-32 h-32 rounded-full flex items-center justify-center transition-all ${
-                isRecording
-                  ? 'bg-red-500 animate-pulse'
-                  : 'gradient-hero'
-              }`}
-            >
-              {isRecording ? (
-                <Square className="h-12 w-12 text-white" />
-              ) : (
-                <Mic className="h-12 w-12 text-white" />
-              )}
+            <div className={`w-32 h-32 rounded-full flex items-center justify-center transition-all ${isRecording ? 'bg-red-500 animate-pulse' : 'gradient-hero'}`}>
+              {isRecording ? <Square className="h-12 w-12 text-white" /> : <Mic className="h-12 w-12 text-white" />}
             </div>
 
             <div className="text-center space-y-2">
@@ -133,9 +103,7 @@ export const AIPronunciation = () => {
                       : 'Keep practicing! Focus on clarity and pace.'}
                   </p>
                 </div>
-                <Button onClick={newPhrase} variant="outline" className="w-full">
-                  Try Another Phrase
-                </Button>
+                <Button onClick={newPhrase} variant="outline" className="w-full">Try Another Phrase</Button>
               </CardContent>
             </Card>
           )}
@@ -143,4 +111,4 @@ export const AIPronunciation = () => {
       </Card>
     </div>
   );
-};
+}

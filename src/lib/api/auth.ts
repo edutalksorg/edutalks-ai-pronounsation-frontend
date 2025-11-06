@@ -1,46 +1,84 @@
-// src/lib/api/axiosClient.ts
-import axios from "axios";
+// src/lib/api/auth.ts
+import axiosClient from "./axiosClient";
 
-const axiosClient = axios.create({
-  baseURL:
-    import.meta.env.VITE_BACKEND_BASE_URL ||
-    "https://edutalks-backend.victoriousmushroom-a657dec3.centralindia.azurecontainerapps.io/api/v1",
-  headers: {
-    "Content-Type": "application/json",
+// ---------- Types ----------
+export interface RegisterPayload {
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+  fullName: string;
+  role: string; // e.g. "user" | "admin" | "instructor"
+  referralCode?: string;
+  referralSource?: string;
+  instructorBio?: string;
+  instructorExpertise?: string[];
+}
+
+export interface LoginPayload {
+  identifier: string; // email or phone
+  password: string;
+  deviceId?: string; // e.g. "web-client"
+  rememberMe?: boolean;
+}
+
+export interface ChangePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+// ---------- API ----------
+const AuthAPI = {
+  register: async (payload: RegisterPayload) => {
+    const { data } = await axiosClient.post("/api/v1/auth/register", payload);
+    return data;
   },
-});
 
-//  Automatically attach Bearer token from localStorage
-axiosClient.interceptors.request.use(
-  (config) => {
-    const token =
-      localStorage.getItem("edulearn_access_token") ||
-      localStorage.getItem("access_token");
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
+  login: async (payload: LoginPayload) => {
+    const { data } = await axiosClient.post("/api/v1/auth/login", payload);
+    return data; // expect { accessToken?, refreshToken?, user? ... }
   },
-  (error) => Promise.reject(error)
-);
 
-// Global error handler (optional: handle 401 refresh later)
-axiosClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const status = error.response?.status;
+  confirmEmail: async (userId: string, token: string) => {
+    const { data } = await axiosClient.get("/api/v1/auth/confirm-email", {
+      params: { userId, token },
+    });
+    return data;
+  },
 
-    if (status === 401) {
-      console.warn("Unauthorized. Token may have expired.");
-      // Optional: clear token or trigger re-login here
-      // localStorage.removeItem("edulearn_access_token");
-    }
+  forgotPassword: async (email: string) => {
+    const { data } = await axiosClient.post("/api/v1/auth/forgot-password", { email });
+    return data;
+  },
 
-    console.error("API Error:", error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
+  changePassword: async (payload: ChangePasswordPayload) => {
+    const { data } = await axiosClient.put("/api/v1/auth/change-password", payload);
+    return data;
+  },
 
-export default axiosClient;
+  logout: async (refreshToken: string, logoutFromAllDevices = false) => {
+    const { data } = await axiosClient.post("/api/v1/auth/logout", {
+      refreshToken,
+      logoutFromAllDevices,
+    });
+    return data;
+  },
+
+  resendEmailConfirmation: async (email: string) => {
+    const { data } = await axiosClient.post(
+      "/api/v1/auth/resend-email-confirmation",
+      { email }
+    );
+    return data;
+  },
+
+  refreshToken: async (refreshToken: string) => {
+    const { data } = await axiosClient.post("/api/v1/auth/refresh-token", {
+      refreshToken,
+    });
+    return data; // expect { accessToken }
+  },
+};
+
+export default AuthAPI;

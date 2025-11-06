@@ -1,8 +1,19 @@
-import axiosInstance from "../axiosConfig";
+import axiosClient from "./axiosClient";
 
-export const processPayment = (data: any) => axiosInstance.post("/payments/process", data);
-export const getPaymentStatus = (transactionId: string) => axiosInstance.get(`/payments/${transactionId}/status`);
-export const getPaymentHistory = () => axiosInstance.get("/payments/history");
-export const requestRefund = (transactionId: string) => axiosInstance.post(`/payments/${transactionId}/refund`);
-export const phonePeCallback = (data: any) => axiosInstance.post("/payments/phonepe/callback", data);
-export const phonePeRedirect = (data: any) => axiosInstance.post("/payments/phonepe/redirect", data);
+export const processPayment = (data: any) =>
+  axiosClient.post("/payments/process", data);
+
+export const getPaymentStatus = (transactionId: string) =>
+  axiosClient.get(`/payments/${transactionId}/status`);
+
+export const getPaymentHistory = () =>
+  axiosClient.get("/payments/history");
+
+export const requestRefund = (transactionId: string) =>
+  axiosClient.post(`/payments/${transactionId}/refund`);
+
+export const phonePeCallback = (data: any) =>
+  axiosClient.post("/payments/phonepe/callback", data);
+
+export const phonePeRedirect = (data: any) =>
+  axiosClient.post("/payments/phonepe/redirect", data);

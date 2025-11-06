@@ -1,183 +1,68 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { Navbar } from "@/components/Navbar";
-<<<<<<< HEAD
+// src/App.tsx
+import React, { Suspense } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-// ✅ Pages
-import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Register from "./pages/Register"; // ✅ newly added
-=======
-import Index from "./pages/Index";
-import Login from "./pages/Login";
->>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
-import Dashboard from "./pages/Dashboard";
-import AdminDashboard from "./pages/AdminDashboard";
-import SuperAdminDashboard from "./pages/SuperAdminDashboard";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
+// ---------- Public Pages ----------
+import Index from "@/pages/Index";
+import LoginPage from "@/pages/Login";
+import Register from "@/pages/Register";
+import Diagnostics from "@/pages/Diagnostics"; // ✅ Added diagnostics page
 
-const queryClient = new QueryClient();
+// ---------- User Pages ----------
+import Dashboard from "@/pages/Dashboard";
+import Profile from "@/pages/Profile";
 
-<<<<<<< HEAD
-const ProtectedRoute = ({
-  children,
-  allowedRoles,
-}: {
-  children: React.ReactNode;
-  allowedRoles?: string[];
-}) => {
-  const { user, isLoading } = useAuth();
+// ---------- Admin Pages ----------
+import AdminDashboard from "@/pages/AdminDashboard";
+import ApplicationsPage from "@/pages/Admin/Applications";
+import ReviewInstructorPage from "@/pages/Admin/ReviewInstructor";
+import AdminQuickTester from "@/pages/Admin/QuickTester";
+import ReferralsSettingsPage from "@/pages/Admin/ReferralsSettings";
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Loading...
-      </div>
-    );
-=======
-const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode; allowedRoles?: string[] }) => {
-  const { user, isLoading } = useAuth();
+// ---------- Layout & Guards ----------
+import AppLayout from "@/layouts/AppLayout";
+import ProtectedRoute from "@/lib/routing/ProtectedRoute";
+// NOTE: RoleRoute intentionally NOT used in this temp setup
 
-  if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
->>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  return <>{children}</>;
-};
-
-const AppRoutes = () => {
-  const { user } = useAuth();
-
+export default function App() {
   return (
-    <>
-      <Navbar />
+    <Suspense fallback={<div style={{ padding: 20 }}>Loading...</div>}>
       <Routes>
-<<<<<<< HEAD
-        <Route
-          path="/"
-          element={
-            user ? (
-              <Navigate
-                to={
-                  user.role === "superadmin"
-                    ? "/superadmin"
-                    : user.role === "admin"
-                    ? "/admin"
-                    : "/dashboard"
-                }
-                replace
-              />
-            ) : (
-              <Index />
-            )
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            user ? (
-              <Navigate
-                to={
-                  user.role === "superadmin"
-                    ? "/superadmin"
-                    : user.role === "admin"
-                    ? "/admin"
-                    : "/dashboard"
-                }
-                replace
-              />
-            ) : (
-              <Login />
-            )
-          }
-        />
-        {/* ✅ Register Route Added */}
+        {/* ---------- Public ---------- */}
+        <Route path="/" element={<Index />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
 
+        {/* ---------- Diagnostics (public) ---------- */}
+        <Route path="/diagnostics" element={<Diagnostics />} /> {/* ✅ Added */}
+
+        {/* ---------- TEMP PUBLIC ADMIN TOOLS (no guards) ---------- */}
+        <Route element={<AppLayout />}>
+          <Route path="/admin/test" element={<AdminQuickTester />} />
+          <Route path="/admin/referrals-settings" element={<ReferralsSettingsPage />} />
+        </Route>
+
+        {/* ---------- Protected Shell ---------- */}
         <Route
-          path="/dashboard"
           element={
-            <ProtectedRoute allowedRoles={["user"]}>
-=======
-        <Route path="/" element={user ? <Navigate to={user.role === 'superadmin' ? '/superadmin' : user.role === 'admin' ? '/admin' : '/dashboard'} replace /> : <Index />} />
-        <Route path="/login" element={user ? <Navigate to={user.role === 'superadmin' ? '/superadmin' : user.role === 'admin' ? '/admin' : '/dashboard'} replace /> : <Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute allowedRoles={['user']}>
->>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
-              <Dashboard />
+            <ProtectedRoute>
+              <AppLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/admin"
-          element={
-<<<<<<< HEAD
-            <ProtectedRoute allowedRoles={["admin"]}>
-=======
-            <ProtectedRoute allowedRoles={['admin']}>
->>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/superadmin"
-          element={
-<<<<<<< HEAD
-            <ProtectedRoute allowedRoles={["superadmin"]}>
-=======
-            <ProtectedRoute allowedRoles={['superadmin']}>
->>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
-              <SuperAdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-<<<<<<< HEAD
-            <ProtectedRoute allowedRoles={["user"]}>
-=======
-            <ProtectedRoute allowedRoles={['user']}>
->>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<NotFound />} />
+        >
+          {/* user routes */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+
+          {/* admin sections (temporarily no RoleRoute) */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/applications" element={<ApplicationsPage />} />
+          <Route path="/admin/review" element={<ReviewInstructorPage />} />
+        </Route>
+
+        {/* ---------- Fallback ---------- */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </>
+    </Suspense>
   );
-};
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <AppRoutes />
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+}

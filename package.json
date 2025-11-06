@@ -8,7 +8,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:api": "openapi --input ./swagger.json --output ./src/lib/api/generated --client axios"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -40,10 +41,7 @@
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.83.0",
-<<<<<<< HEAD
     "axios": "^1.13.1",
-=======
->>>>>>> 75787e558a22d02d86ba092c5fe844950f261d8d
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -78,6 +76,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
     "lovable-tagger": "^1.1.11",
+    "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
